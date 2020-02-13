@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+        <import type="com.baehoons.searchimages.data.remote.kakao.request.ImageSortType" />
+        <import type="com.baehoons.suggestionsearchview.SuggestionSearchView.State"/>
+
+
+        <variable
+            name="searchBoxViewModel"
+            type="com.baehoons.searchimages.presentation.search.searchbox.SearchBoxViewModel" />
+
+        <variable
+            name="searchListViewModel"
+            type="com.baehoons.searchimages.presentation.search.imagesearch.ImageSearchViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        tools:context=".presentation.search.ImageSearchActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/mainToolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/fourImageInLineButton"
+            android:layout_width="@dimen/count_in_line_icon_size"
+            android:layout_height="@dimen/count_in_line_icon_size"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="@dimen/count_in_line_icon_side_margin"
+            android:onClick="@{() -> searchListViewModel.changeCountOfItemInLine(4)}"
+            app:isSelected="@{searchListViewModel.countOfItemInLine == 4}"
+            app:layout_constraintEnd_toEndOf="@+id/mainToolbar"
+            app:layout_constraintTop_toBottomOf="@+id/mainToolbar"
+            app:srcCompat="@drawable/ic_four_image_in_line_selector" />
+
+        <ImageView
+            android:id="@+id/threeImageInLineButton"
+            android:layout_width="@dimen/count_in_line_icon_size"
+            android:layout_height="@dimen/count_in_line_icon_size"
+            android:layout_marginEnd="@dimen/count_in_line_icon_side_margin"
+            android:onClick="@{() -> searchListViewModel.changeCountOfItemInLine(3)}"
+            app:isSelected="@{searchListViewModel.countOfItemInLine == 3}"
+            app:layout_constraintBottom_toBottomOf="@+id/fourImageInLineButton"
+            app:layout_constraintEnd_toStartOf="@+id/fourImageInLineButton"
+            app:layout_constraintTop_toTopOf="@+id/fourImageInLineButton"
+            app:srcCompat="@drawable/ic_three_image_in_line_selector" />
+
+        <ImageView
+            android:id="@+id/twoImageInLineButton"
+            android:layout_width="@dimen/count_in_line_icon_size"
+            android:layout_height="@dimen/count_in_line_icon_size"
+            android:layout_marginEnd="@dimen/count_in_line_icon_side_margin"
+            android:onClick="@{() -> searchListViewModel.changeCountOfItemInLine(2)}"
+            app:isSelected="@{searchListViewModel.countOfItemInLine == 2}"
+            app:layout_constraintBottom_toBottomOf="@+id/threeImageInLineButton"
+            app:layout_constraintEnd_toStartOf="@+id/threeImageInLineButton"
+            app:layout_constraintTop_toTopOf="@+id/threeImageInLineButton"
+            app:srcCompat="@drawable/ic_two_image_in_line_selector" />
+
+        <TextView
+            android:id="@+id/accuracySortTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/image_sort_type_text_view_side_margin"
+            android:text="@string/image_sort_type_accuracy_text"
+            android:textStyle="bold"
+            android:textColor="@drawable/image_sort_type_textview_selector"
+            android:onClick="@{() -> searchListViewModel.changeImageSortType(ImageSortType.ACCURACY)}"
+            app:isSelected="@{searchListViewModel.imageSortType == ImageSortType.ACCURACY}"
+            app:layout_constraintBottom_toBottomOf="@+id/twoImageInLineButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/twoImageInLineButton" />
+
+        <TextView
+            android:id="@+id/recencySortTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/image_sort_type_text_view_side_margin"
+            android:text="@string/image_sort_type_recency_text"
+            android:textStyle="bold"
+            android:textColor="@drawable/image_sort_type_textview_selector"
+            android:onClick="@{() -> searchListViewModel.changeImageSortType(ImageSortType.RECENCY)}"
+            app:isSelected="@{searchListViewModel.imageSortType == ImageSortType.RECENCY}"
+            app:layout_constraintBottom_toBottomOf="@+id/accuracySortTextView"
+            app:layout_constraintStart_toEndOf="@+id/accuracySortTextView"
+            app:layout_constraintTop_toTopOf="@+id/accuracySortTextView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imageRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/count_in_line_icon_side_margin"
+            android:scrollbars="vertical"
+            android:visibility="@{(searchListViewModel.imageDocuments == null || searchListViewModel.imageDocuments.size() == 0) ? View.INVISIBLE : View.VISIBLE}"
+            app:spanCount="@{searchListViewModel.countOfItemInLine}"
+            app:imageSearchState="@{searchListViewModel.imageSearchState}"
+            app:itemsWithListAdapter="@{searchListViewModel.imageDocuments}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fourImageInLineButton" />
+
+        <TextView
+            android:id="@+id/emptyTextView"
+            style="@style/EmptyGuideTextViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/image_search_empty_view_text"
+            android:visibility="@{(searchListViewModel.imageDocuments == null || searchListViewModel.imageDocuments.size() == 0) ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageRecyclerView" />
+
+        <com.baehoons.suggestionsearchview.SuggestionSearchView
+            android:id="@+id/suggestionSearchView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:enable="@{searchBoxViewModel.searchBoxEnableEvent}"
+            app:hint="@string/suggestion_search_view_hint"
+            app:itemsWithListAdapter="@{searchBoxViewModel.searchLogs}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:margin="5dp"
+            app:onStateChangeListener="@{(state) -> searchBoxViewModel.onStateChange(state == State.OPEN)}"
+            app:radius="10dp"
+            app:searchViewBackgroundColor="@color/colorLightGray"
+            app:suggestionBackgroundColor="@color/colorLightGray"
+            app:suggestionsEnable="@{searchBoxViewModel.searchLogsEnableEvent}"
+            app:textSize="14dp">
+
+        </com.baehoons.suggestionsearchview.SuggestionSearchView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

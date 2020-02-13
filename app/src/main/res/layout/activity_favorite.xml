@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="favoriteListViewModel"
+            type="com.baehoons.searchimages.presentation.favorite.FavoriteImagesViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.favorite.FavoriteImagesActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/mainToolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:text="@string/favorite_title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/ToolbarTitleStyle"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favoriteRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorWhite"
+            android:visibility="@{(favoriteListViewModel.favoriteImages == null || favoriteListViewModel.favoriteImages.size() == 0) ? View.INVISIBLE : View.VISIBLE}"
+            app:itemsWithListAdapter="@{favoriteListViewModel.favoriteImages}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainToolbar"
+            app:spanCount="4"/>
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/EmptyGuideTextViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/favorite_empty_view_text"
+            android:visibility="@{(favoriteListViewModel.favoriteImages == null || favoriteListViewModel.favoriteImages.size() == 0) ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/favoriteRecyclerView"
+            app:layout_constraintStart_toStartOf="@+id/favoriteRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/mainToolbar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
